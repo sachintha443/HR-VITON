@@ -10,7 +10,7 @@ from cp_dataset_test import CPDatasetTest, CPDataLoader
 
 from networks import ConditionGenerator, load_checkpoint, make_grid
 from network_generator import SPADEGenerator
-from tensorboardX import SummaryWriter
+# from tensorboardX import SummaryWriter
 from utils import *
 
 import torchgeometry as tgm
@@ -125,7 +125,7 @@ def test(opt, test_loader, tocg, generator):
                 densepose = inputs['densepose'].cuda()
                 im = inputs['image']
                 input_label, input_parse_agnostic = label.cuda(), parse_agnostic.cuda()
-                pre_clothes_mask = torch.FloatTensor((pre_clothes_mask.detach().cpu().numpy() > 0.5).astype(np.float)).cuda()
+                pre_clothes_mask = torch.FloatTensor((pre_clothes_mask.detach().cpu().numpy() > 0.5).astype(np.cfloat)).cuda()
             else :
                 pose_map = inputs['pose']
                 pre_clothes_mask = inputs['cloth_mask'][opt.datasetting]
@@ -136,7 +136,7 @@ def test(opt, test_loader, tocg, generator):
                 densepose = inputs['densepose']
                 im = inputs['image']
                 input_label, input_parse_agnostic = label, parse_agnostic
-                pre_clothes_mask = torch.FloatTensor((pre_clothes_mask.detach().cpu().numpy() > 0.5).astype(np.float))
+                pre_clothes_mask = torch.FloatTensor((pre_clothes_mask.detach().cpu().numpy() > 0.5).astype(np.cfloat))
 
 
 
@@ -160,9 +160,9 @@ def test(opt, test_loader, tocg, generator):
             
             # warped cloth mask one hot
             if opt.cuda :
-                warped_cm_onehot = torch.FloatTensor((warped_clothmask_paired.detach().cpu().numpy() > 0.5).astype(np.float)).cuda()
+                warped_cm_onehot = torch.FloatTensor((warped_clothmask_paired.detach().cpu().numpy() > 0.5).astype(np.cfloat)).cuda()
             else :
-                warped_cm_onehot = torch.FloatTensor((warped_clothmask_paired.detach().cpu().numpy() > 0.5).astype(np.float))
+                warped_cm_onehot = torch.FloatTensor((warped_clothmask_paired.detach().cpu().numpy() > 0.5).astype(np.cfloat))
 
             if opt.clothmask_composition != 'no_composition':
                 if opt.clothmask_composition == 'detach':
